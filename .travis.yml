@@ -15,7 +15,7 @@ after_success:
   - docker build -t horiehupro/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  #Take those images and push them to docker hub
+  # Take those images and push them to docker hub
   - docker push horiehupro/multi-client
   - docker push horiehupro/multi-nginx
   - docker push horiehupro/multi-server
