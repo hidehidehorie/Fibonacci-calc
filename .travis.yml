@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t horiehupro/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run horiehupro/react-test npm test --coverage
+
+after_success:
+  - docker build -t horiehupro/multi-client ./client
+  - docker build -t horiehupro/multi-nginx ./nginx
+  - docker build -t horiehupro/multi-server ./server
+  - docker build -t horiehupro/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #Take those images and push them to docker hub
+  - docker push horiehupro/multi-client
+  - docker push horiehupro/multi-nginx
+  - docker push horiehupro/multi-server
+  - docker push horiehupro/multi-worker
